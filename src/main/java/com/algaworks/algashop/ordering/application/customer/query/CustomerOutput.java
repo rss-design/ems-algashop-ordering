@@ -1,0 +1,30 @@
+package com.algaworks.algashop.ordering.application.customer.query;
+
+import com.algaworks.algashop.ordering.application.commons.AddressData;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class CustomerOutput {
+    private UUID id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String document;
+    private String phone;
+    private LocalDate birthDate;
+    private Integer loyaltyPoints;
+    private OffsetDateTime registeredAt;
+    private OffsetDateTime archivedAt;
+    private Boolean promotionNotificationsAllowed;
+    private Boolean archived;
+    private AddressData address;
+}
