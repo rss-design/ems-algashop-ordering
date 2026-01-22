@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.algaworks.algashop.ordering.presentation.CustomerControllerContractTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-01-22T11:46:27.443Z" hostname="WNLEC-JJMR6Q3" time="2.981">
+  <properties/>
+  <testcase name="createCustomerContract()" classname="com.algaworks.algashop.ordering.presentation.CustomerControllerContractTest" time="2.18"/>
+  <testcase name="findByIdContract()" classname="com.algaworks.algashop.ordering.presentation.CustomerControllerContractTest" time="0.173"/>
+  <testcase name="findCustomersContract()" classname="com.algaworks.algashop.ordering.presentation.CustomerControllerContractTest" time="0.291"/>
+  <testcase name="createCustomerError400Contract()" classname="com.algaworks.algashop.ordering.presentation.CustomerControllerContractTest" time="0.115"/>
+  <testcase name="createCustomerError422Contract()" classname="com.algaworks.algashop.ordering.presentation.CustomerControllerContractTest" time="0.056"/>
+  <testcase name="createCustomerError409Contract()" classname="com.algaworks.algashop.ordering.presentation.CustomerControllerContractTest" time="0.055"/>
+  <testcase name="findByIdError404Contract()" classname="com.algaworks.algashop.ordering.presentation.CustomerControllerContractTest" time="0.042"/>
+  <testcase name="createCustomerError500Contract()" classname="com.algaworks.algashop.ordering.presentation.CustomerControllerContractTest" time="0.055"/>
+  <system-out><![CDATA[Standard Commons Logging discovery in action with spring-jcl: please remove commons-logging.jar from classpath in order to avoid potential conflicts
+08:46:25.199 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.algaworks.algashop.ordering.presentation.CustomerControllerContractTest]: CustomerControllerContractTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+08:46:25.392 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.algaworks.algashop.ordering.OrderingApplication for test class com.algaworks.algashop.ordering.presentation.CustomerControllerContractTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.4)
+
+2026-01-22T08:46:25.769-03:00  INFO 27950 --- [ordering] [    Test worker] c.a.a.o.p.CustomerControllerContractTest : Starting CustomerControllerContractTest using Java 21.0.2 with PID 27950 (started by magalu in /home/magalu/Documentos/projetos/java/algaworks/02 - estudo/ems/algashop/microservices/ordering)
+2026-01-22T08:46:25.770-03:00  INFO 27950 --- [ordering] [    Test worker] c.a.a.o.p.CustomerControllerContractTest : The following 1 profile is active: "test"
+2026-01-22T08:46:27.394-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-01-22T08:46:27.395-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-01-22T08:46:27.398-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-01-22T08:46:27.432-03:00  INFO 27950 --- [ordering] [    Test worker] c.a.a.o.p.CustomerControllerContractTest : Started CustomerControllerContractTest in 1.967 seconds (process running for 2.863)
+2026-01-22T08:46:27.457-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-01-22T08:46:27.458-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-01-22T08:46:27.459-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-01-22T08:46:29.628-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-01-22T08:46:29.629-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-01-22T08:46:29.629-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-01-22T08:46:29.803-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-01-22T08:46:29.803-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-01-22T08:46:29.804-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-01-22T08:46:30.096-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-01-22T08:46:30.097-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-01-22T08:46:30.098-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-01-22T08:46:30.213-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-01-22T08:46:30.213-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-01-22T08:46:30.214-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-01-22T08:46:30.271-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-01-22T08:46:30.272-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-01-22T08:46:30.273-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-01-22T08:46:30.327-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-01-22T08:46:30.328-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-01-22T08:46:30.328-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-01-22T08:46:30.371-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-01-22T08:46:30.371-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-01-22T08:46:30.372-03:00  INFO 27950 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-01-22T08:46:30.382-03:00 ERROR 27950 --- [ordering] [    Test worker] c.a.a.o.p.ApiExceptionHandler            : null
+
+java.lang.RuntimeException: null
+
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
