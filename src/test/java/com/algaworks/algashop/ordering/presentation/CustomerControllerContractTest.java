@@ -10,12 +10,16 @@ import com.algaworks.algashop.ordering.application.customer.query.CustomerQueryS
 import com.algaworks.algashop.ordering.application.customer.query.CustomerSummaryOutput;
 import com.algaworks.algashop.ordering.application.customer.query.CustomerSummaryOutputTestDataBuilder;
 import com.algaworks.algashop.ordering.domain.model.DomainException;
+import com.algaworks.algashop.ordering.domain.model.customer.Customer;
 import com.algaworks.algashop.ordering.domain.model.customer.CustomerEmailIsInUseException;
 import com.algaworks.algashop.ordering.domain.model.customer.CustomerNotFoundException;
+import com.algaworks.algashop.ordering.domain.model.customer.CustomerTestDataBuilder;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.nio.charset.StandardCharsets;
+import java.sql.Date;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import org.hamcrest.Matchers;
@@ -52,7 +56,7 @@ class CustomerControllerContractTest {
   }
 
   @Test
-  public void createCustomerContract() {
+  void createCustomerContract() {
     CustomerOutput customerOutput = CustomerOutputTestDataBuilder.existing().build();
 
     UUID customerId = UUID.randomUUID();
@@ -116,7 +120,7 @@ class CustomerControllerContractTest {
   }
 
   @Test
-  public void createCustomerError400Contract() {
+  void createCustomerError400Contract() {
     String jsonInput = """
         {
           "firstName": "",
@@ -161,7 +165,7 @@ class CustomerControllerContractTest {
   }
 
   @Test
-  public void findCustomersContract() {
+  void findCustomersContract() {
     int sizeLimit = 5;
     int pageNumber = 0;
 
@@ -218,7 +222,7 @@ class CustomerControllerContractTest {
   }
 
   @Test
-  public void findByIdContract() {
+  void findByIdContract() {
     CustomerOutput customer = CustomerOutputTestDataBuilder.existing().build();
 
     Mockito.when(customerQueryService.findById(customer.getId())).thenReturn(customer);
@@ -258,7 +262,7 @@ class CustomerControllerContractTest {
   }
 
   @Test
-  public void findByIdError404Contract() {
+  void findByIdError404Contract() {
     UUID invalidCustomerId = UUID.randomUUID();
 
     Mockito.when(customerQueryService.findById(invalidCustomerId))
@@ -283,7 +287,7 @@ class CustomerControllerContractTest {
   }
 
   @Test
-  public void createCustomerError409Contract() {
+  void createCustomerError409Contract() {
     Mockito.when(customerManagementApplicationService.create(Mockito.any(CustomerInput.class)))
       .thenThrow(CustomerEmailIsInUseException.class);
 
@@ -328,7 +332,7 @@ class CustomerControllerContractTest {
   }
 
   @Test
-  public void createCustomerError422Contract() {
+  void createCustomerError422Contract() {
     Mockito.when(customerManagementApplicationService.create(Mockito.any(CustomerInput.class)))
       .thenThrow(DomainException.class);
 
@@ -373,7 +377,7 @@ class CustomerControllerContractTest {
   }
 
   @Test
-  public void createCustomerError500Contract() {
+  void createCustomerError500Contract() {
     Mockito.when(customerManagementApplicationService.create(Mockito.any(CustomerInput.class)))
       .thenThrow(RuntimeException.class);
 
@@ -415,6 +419,89 @@ class CustomerControllerContractTest {
         "title", Matchers.notNullValue(),
         "instance", Matchers.notNullValue()
       );
+  }
+
+  @Test
+  void updateCustomerContract() {
+    CustomerOutput customer = CustomerOutputTestDataBuilder.existing().build();
+    DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+    AddressData address = customer.getAddress();
+    UUID customerId = UUID.randomUUID();
+
+    Mockito.when(customerQueryService.findById(Mockito.any(UUID.class)))
+      .thenReturn(customer);
+
+    String jsonInput = """
+        {
+          "firstName": "John",
+          "lastName": "Doe",
+          "email": "johndoe@email.com",
+          "document": "12345",
+          "phone": "1191234564",
+          "birthDate": "1991-07-05",
+          "promotionNotificationsAllowed": false,
+          "address": {
+            "street": "Bourbon Street",
+            "number": "2000",
+            "complement": "apt 122",
+            "neighborhood": "North Ville",
+            "city": "Yostfort",
+            "state": "South Carolina",
+            "zipCode": "12321"
+          }
+        }
+        """;
+
+    RestAssuredMockMvc
+      .given()
+        .accept(MediaType.APPLICATION_JSON_VALUE)
+        .body(jsonInput)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+      .when()
+        .put("/api/v1/customers/{customerId}", customerId)
+      .then()
+        .assertThat()
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .statusCode(HttpStatus.OK.value())
+        .body(
+          "id", Matchers.equalTo(customer.getId().toString()),
+          "firstName", Matchers.equalTo(customer.getFirstName()),
+          "lastName", Matchers.is(customer.getLastName()),
+          "email", Matchers.is(customer.getEmail()),
+          "document", Matchers.is(customer.getDocument()),
+          "phone", Matchers.is(customer.getPhone()),
+          "birthDate", Matchers.is(customer.getBirthDate().toString()),
+          "loyaltyPoints", Matchers.is(customer.getLoyaltyPoints()),
+          "promotionNotificationsAllowed", Matchers.is(customer.getPromotionNotificationsAllowed()),
+          "archived", Matchers.is(customer.getArchived()),
+          "registeredAt", Matchers.is(formatter.format(customer.getRegisteredAt())),
+          "address.street", Matchers.is(address.getStreet()),
+          "address.number", Matchers.is(address.getNumber()),
+          "address.complement", Matchers.is(address.getComplement()),
+          "address.neighborhood", Matchers.is(address.getNeighborhood()),
+          "address.city", Matchers.is(address.getCity()),
+          "address.state", Matchers.is(address.getState()),
+          "address.zipCode", Matchers.is(address.getZipCode())
+      );
+  }
+
+
+  @Test
+  void deleteCustomerContract() {
+    CustomerOutput customer = CustomerOutputTestDataBuilder.existing().build();
+
+    UUID customerId = UUID.randomUUID();
+    Mockito.when(customerQueryService.findById(Mockito.any(UUID.class)))
+      .thenReturn(customer);
+
+    RestAssuredMockMvc
+      .given()
+      .contentType(MediaType.APPLICATION_JSON_VALUE)
+      .when()
+      .delete("/api/v1/customers/{customerId}", customerId)
+      .then()
+      .assertThat()
+      .statusCode(HttpStatus.NO_CONTENT.value());
   }
 
 }
