@@ -29,7 +29,7 @@ public class OrderDetailOutputTestDataBuilder {
         .phone("1191234564")
         .build())
       .totalItems(2)
-      .totalAmount(new BigDecimal("41.98"))
+      .totalAmount(new BigDecimal("39.98"))
       .placedAt(OffsetDateTime.now())
       .paidAt(null)
       .canceledAt(null)
@@ -82,7 +82,7 @@ public class OrderDetailOutputTestDataBuilder {
       .productName("Notebook Dive Gamer X11")
       .price(new BigDecimal("19.99"))
       .quantity(2)
-      .totalAmount(new BigDecimal("19.99"))
+      .totalAmount(new BigDecimal("39.98"))
       .build());
     return items;
   }
