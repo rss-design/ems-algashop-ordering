@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.algaworks.algashop.ordering.contract.base.ShoppingCartTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-02-25T16:15:15.565Z" hostname="WNLEC-JJMR6Q3" time="0.879">
+  <properties/>
+  <testcase name="validate_deleteShoppingCartByIdV1()" classname="com.algaworks.algashop.ordering.contract.base.ShoppingCartTest" time="0.537"/>
+  <testcase name="validate_deleteAllShoppingCartItemsV1()" classname="com.algaworks.algashop.ordering.contract.base.ShoppingCartTest" time="0.012"/>
+  <testcase name="validate_findShoppingCartByIdV1()" classname="com.algaworks.algashop.ordering.contract.base.ShoppingCartTest" time="0.12"/>
+  <testcase name="validate_deleteShoppingCartItemByIdV1()" classname="com.algaworks.algashop.ordering.contract.base.ShoppingCartTest" time="0.01"/>
+  <testcase name="validate_listShoppingCartItemsByIdV1()" classname="com.algaworks.algashop.ordering.contract.base.ShoppingCartTest" time="0.012"/>
+  <testcase name="validate_findShoppingCartByIdV1NotFound()" classname="com.algaworks.algashop.ordering.contract.base.ShoppingCartTest" time="0.026"/>
+  <testcase name="validate_addShoppingCartItemV1()" classname="com.algaworks.algashop.ordering.contract.base.ShoppingCartTest" time="0.107"/>
+  <testcase name="validate_createShoppingCartV1()" classname="com.algaworks.algashop.ordering.contract.base.ShoppingCartTest" time="0.045"/>
+  <system-out><![CDATA[13:15:13.304 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.algaworks.algashop.ordering.contract.base.ShoppingCartTest]: ShoppingCartTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+13:15:13.429 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.algaworks.algashop.ordering.OrderingApplication for test class com.algaworks.algashop.ordering.contract.base.ShoppingCartTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.5.5)
+
+2026-02-25T13:15:13.749-03:00  INFO 42942 --- [ordering] [    Test worker] c.a.a.o.contract.base.ShoppingCartTest   : Starting ShoppingCartTest using Java 21.0.2 with PID 42942 (started by magalu in /home/magalu/Documentos/projetos/java/algaworks/02 - estudo/ems/algashop/microservices/ordering)
+2026-02-25T13:15:13.750-03:00  INFO 42942 --- [ordering] [    Test worker] c.a.a.o.contract.base.ShoppingCartTest   : The following 1 profile is active: "test"
+2026-02-25T13:15:15.522-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-02-25T13:15:15.522-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-02-25T13:15:15.525-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2026-02-25T13:15:15.553-03:00  INFO 42942 --- [ordering] [    Test worker] c.a.a.o.contract.base.ShoppingCartTest   : Started ShoppingCartTest in 2.078 seconds (process running for 2.914)
+2026-02-25T13:15:15.579-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-02-25T13:15:15.579-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-02-25T13:15:15.580-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-02-25T13:15:16.107-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-02-25T13:15:16.107-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-02-25T13:15:16.108-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-02-25T13:15:16.121-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-02-25T13:15:16.121-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-02-25T13:15:16.122-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-02-25T13:15:16.242-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-02-25T13:15:16.242-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-02-25T13:15:16.243-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-02-25T13:15:16.252-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-02-25T13:15:16.252-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-02-25T13:15:16.253-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-02-25T13:15:16.266-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-02-25T13:15:16.266-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-02-25T13:15:16.267-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
+2026-02-25T13:15:16.293-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-02-25T13:15:16.293-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-02-25T13:15:16.295-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 2 ms
+2026-02-25T13:15:16.401-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-02-25T13:15:16.401-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-02-25T13:15:16.402-03:00  INFO 42942 --- [ordering] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+]]></system-out>
+  <system-err><![CDATA[Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
+WARNING: A Java agent has been loaded dynamically (/home/magalu/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.17.7/fbf3d6d649ed37fc9e9c59480a05be0a26e3c2da/byte-buddy-agent-1.17.7.jar)
+WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
+WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
+WARNING: Dynamic loading of agents will be disallowed by default in a future release
+]]></system-err>
+</testsuite>
