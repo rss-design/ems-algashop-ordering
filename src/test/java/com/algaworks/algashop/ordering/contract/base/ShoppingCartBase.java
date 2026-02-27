@@ -4,10 +4,9 @@ import com.algaworks.algashop.ordering.application.shoppingcart.management.Shopp
 import com.algaworks.algashop.ordering.application.shoppingcart.query.ShoppingCartOutputTestDataBuilder;
 import com.algaworks.algashop.ordering.application.shoppingcart.query.ShoppingCartQueryService;
 import com.algaworks.algashop.ordering.domain.model.shoppingcart.ShoppingCartNotFoundException;
-import com.algaworks.algashop.ordering.presentation.ShoppingCartController;
+import com.algaworks.algashop.ordering.presentation.shoppingcart.ShoppingCartController;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;

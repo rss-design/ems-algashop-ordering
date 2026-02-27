@@ -1,4 +1,4 @@
-package com.algaworks.algashop.ordering.presentation;
+package com.algaworks.algashop.ordering.presentation.customer;
 
 import com.algaworks.algashop.ordering.application.commons.AddressData;
 import com.algaworks.algashop.ordering.application.customer.management.CustomerInput;
@@ -10,16 +10,12 @@ import com.algaworks.algashop.ordering.application.customer.query.CustomerQueryS
 import com.algaworks.algashop.ordering.application.customer.query.CustomerSummaryOutput;
 import com.algaworks.algashop.ordering.application.customer.query.CustomerSummaryOutputTestDataBuilder;
 import com.algaworks.algashop.ordering.domain.model.DomainException;
-import com.algaworks.algashop.ordering.domain.model.customer.Customer;
 import com.algaworks.algashop.ordering.domain.model.customer.CustomerEmailIsInUseException;
 import com.algaworks.algashop.ordering.domain.model.customer.CustomerNotFoundException;
-import com.algaworks.algashop.ordering.domain.model.customer.CustomerTestDataBuilder;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import java.nio.charset.StandardCharsets;
-import java.sql.Date;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import org.hamcrest.Matchers;
