@@ -43,39 +43,37 @@ public class BuyNowApplicationService {
     @Transactional
 
     public String buyNow(BuyNowInput input){
-        Objects.requireNonNull(input);
+      Objects.requireNonNull(input);
 
-        PaymentMethod paymentMethod = PaymentMethod.valueOf(input.getPaymentMethod());
-        CustomerId customerId = new CustomerId(input.getCustomerId());
-        Quantity quantity = new Quantity(input.getQuantity());
+      PaymentMethod paymentMethod = PaymentMethod.valueOf(input.getPaymentMethod());
+      CustomerId customerId = new CustomerId(input.getCustomerId());
+      Quantity quantity = new Quantity(input.getQuantity());
+      ProductId productId = new ProductId(input.getProductId());
 
-        Customer customer = customers.ofId(customerId).orElseThrow(CustomerNotFoundException::new);
+      Customer customer = customers.ofId(customerId).orElseThrow(() -> new CustomerNotFoundException(customerId));
 
-        Product product = findProduct(new ProductId(input.getProductId()));
+      Product product = productCatalogService.ofId(productId)
+          .orElseThrow(() -> new ProductNotFoundException(productId));
 
-        var shippingCalculationResult = calculateShippingCost(input.getShipping());
+      var shippingCalculationResult = calculateShippingCost(input.getShipping());
 
-        Shipping shipping =
-            shippingInputDisassembler.toDomainModel(input.getShipping(), shippingCalculationResult);
+      Shipping shipping =
+          shippingInputDisassembler.toDomainModel(input.getShipping(), shippingCalculationResult);
 
-        Billing billing = billingInputDisassembler.toDomainModel(input.getBilling());
+      Billing billing = billingInputDisassembler.toDomainModel(input.getBilling());
 
-        Order order =
-            buyNowService.buyNow(product, customer, billing, shipping, quantity, paymentMethod);
+      Order order =
+          buyNowService.buyNow(product, customer, billing, shipping, quantity, paymentMethod);
 
-        orders.add(order);
+      orders.add(order);
 
-        return order.id().toString();
+      return order.id().toString();
     }
 
     private ShippingCostService.CalculationResult calculateShippingCost(ShippingInput shipping) {
-        ZipCode origin = originAddressService.originAddress().zipCode();
-        ZipCode destination = new ZipCode(shipping.getAddress().getZipCode());
-        return shippingCostService.calculate(new ShippingCostService.CalculationRequest(origin, destination));
+      ZipCode origin = originAddressService.originAddress().zipCode();
+      ZipCode destination = new ZipCode(shipping.getAddress().getZipCode());
+      return shippingCostService.calculate(new ShippingCostService.CalculationRequest(origin, destination));
     }
 
-    private Product findProduct(ProductId productId) {
-        return productCatalogService.ofId(productId)
-            .orElseThrow(ProductNotFoundException::new);
-    }
 }
