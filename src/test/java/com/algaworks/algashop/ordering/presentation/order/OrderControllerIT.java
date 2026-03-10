@@ -6,9 +6,9 @@ import com.algaworks.algashop.ordering.infrastructure.persistence.entity.Custome
 import com.algaworks.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntityRepository;
 import com.algaworks.algashop.ordering.utils.AlgaShopResourceUtils;
 import io.restassured.RestAssured;
-import io.restassured.config.JsonConfig;
 import io.restassured.path.json.config.JsonPathConfig;
 import java.util.UUID;
+import static io.restassured.config.JsonConfig.jsonConfig;
 
 import org.assertj.core.api.Assertions;
 import org.hamcrest.Matchers;
@@ -37,14 +37,11 @@ public class OrderControllerIT {
   private static final UUID validCustomerId = UUID.fromString("6e148bd5-47f6-4022-b9da-07cfaa294f7a");
 
   @BeforeEach
-  public void setUp() {
+  public void setup() {
     RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
     RestAssured.port = port;
 
-    JsonConfig jsonConfig =
-      JsonConfig.jsonConfig().numberReturnType(JsonPathConfig.NumberReturnType.BIG_DECIMAL);
-
-    RestAssured.config = RestAssured.config().jsonConfig(jsonConfig);
+    RestAssured.config().jsonConfig(jsonConfig().numberReturnType(JsonPathConfig.NumberReturnType.BIG_DECIMAL));
 
     initDatabase();
   }
@@ -62,35 +59,33 @@ public class OrderControllerIT {
   }
 
   @Test
-  void shouldCreateOrderUsingProduct() {
-    String json =
-      AlgaShopResourceUtils.readContent("json/create-order-with-product.json");
+  public void shouldCreateOrderUsingProduct() {
+    String json = AlgaShopResourceUtils.readContent("json/create-order-with-product.json");
 
     String createdOrderId = RestAssured
       .given()
-        .accept(MediaType.APPLICATION_JSON_VALUE)
-        .contentType("application/vnd.order-with-product.v1+json")
-        .body(json)
+      .accept(MediaType.APPLICATION_JSON_VALUE)
+      .contentType("application/vnd.order-with-product.v1+json")
+      .body(json)
       .when()
-        .post("/api/v1/orders")
+      .post("/api/v1/orders")
       .then()
-        .assertThat()
-        .contentType(MediaType.APPLICATION_JSON_VALUE)
-        .statusCode(HttpStatus.CREATED.value())
-        .body("id", Matchers.not(Matchers.emptyString()),
-          "customer.id", Matchers.is(validCustomerId.toString()))
-        .extract().jsonPath().getString("id");
+      .assertThat()
+      .contentType(MediaType.APPLICATION_JSON_VALUE)
+      .statusCode(HttpStatus.CREATED.value())
+      .body("id", Matchers.not(Matchers.emptyString()),
+        "customer.id", Matchers.is(validCustomerId.toString()))
+      .extract()
+      .jsonPath().getString("id");
 
     boolean orderExists = orderRepository.existsById(new OrderId(createdOrderId).value().toLong());
-
     Assertions.assertThat(orderExists).isTrue();
+
   }
 
   @Test
-  void shouldNotCreateOrderUsingProductWhenCustomerNotFound() {
-    String json =
-      AlgaShopResourceUtils.readContent("json/create-order-with-product-and-invalid-customer.json");
-
+  public void shouldNotCreateOrderUsingProductWhenCustomerWasNotFound() {
+    String json = AlgaShopResourceUtils.readContent("json/create-order-with-product-and-invalid-customer.json");
     RestAssured
       .given()
       .accept(MediaType.APPLICATION_JSON_VALUE)

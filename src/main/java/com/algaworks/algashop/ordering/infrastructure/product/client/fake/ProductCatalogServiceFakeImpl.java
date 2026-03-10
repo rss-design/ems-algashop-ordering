@@ -9,7 +9,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class ProductCatalogServiceFakeImpl implements ProductCatalogService {
 
     @Override
