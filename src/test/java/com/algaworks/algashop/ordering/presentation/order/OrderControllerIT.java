@@ -5,13 +5,17 @@ import com.algaworks.algashop.ordering.infrastructure.persistence.customer.Custo
 import com.algaworks.algashop.ordering.infrastructure.persistence.entity.CustomerPersistenceEntityTestDataBuilder;
 import com.algaworks.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntityRepository;
 import com.algaworks.algashop.ordering.utils.AlgaShopResourceUtils;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
 import io.restassured.RestAssured;
 import io.restassured.path.json.config.JsonPathConfig;
 import java.util.UUID;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
 import static io.restassured.config.JsonConfig.jsonConfig;
 
 import org.assertj.core.api.Assertions;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +38,11 @@ public class OrderControllerIT {
   @Autowired
   private OrderPersistenceEntityRepository orderRepository;
 
+  private WireMockServer wireMockProductCatalog;
+  private WireMockServer wireMockRapidex;
+
   private static final UUID validCustomerId = UUID.fromString("6e148bd5-47f6-4022-b9da-07cfaa294f7a");
+
 
   @BeforeEach
   public void setup() {
@@ -44,6 +52,29 @@ public class OrderControllerIT {
     RestAssured.config().jsonConfig(jsonConfig().numberReturnType(JsonPathConfig.NumberReturnType.BIG_DECIMAL));
 
     initDatabase();
+
+    wireMockRapidex = new WireMockServer(
+      options()
+        .port(8780)
+        .usingFilesUnderDirectory("src/test/resources/wiremock/rapidex")
+        .extensions(new ResponseTemplateTransformer(true))
+    );
+
+    wireMockProductCatalog = new WireMockServer(
+      options()
+        .port(8781)
+        .usingFilesUnderDirectory("src/test/resources/wiremock/product-catalog")
+        .extensions(new ResponseTemplateTransformer(true))
+    );
+
+    wireMockRapidex.start();
+    wireMockProductCatalog.start();
+  }
+
+  @AfterEach
+  public void tearDown() {
+    wireMockRapidex.stop();
+    wireMockProductCatalog.stop();
   }
 
   private void initDatabase() {

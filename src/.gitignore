@@ -1,8 +1,8 @@
 HELP.md
 .gradle/
+*.class
 build/
 !gradle/wrapper/gradle-wrapper.jar
-*.class
 
 ### STS ###
 .apt_generated
