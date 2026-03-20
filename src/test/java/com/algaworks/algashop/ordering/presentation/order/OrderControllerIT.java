@@ -1,5 +1,8 @@
 package com.algaworks.algashop.ordering.presentation.order;
 
+import com.algaworks.algashop.ordering.application.checkout.BuyNowInput;
+import com.algaworks.algashop.ordering.application.checkout.BuyNowInputTestDataBuilder;
+import com.algaworks.algashop.ordering.application.order.query.OrderDetailOutput;
 import com.algaworks.algashop.ordering.domain.model.order.OrderId;
 import com.algaworks.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityRepository;
 import com.algaworks.algashop.ordering.infrastructure.persistence.entity.CustomerPersistenceEntityTestDataBuilder;
@@ -42,6 +45,7 @@ public class OrderControllerIT {
   private WireMockServer wireMockRapidex;
 
   private static final UUID validCustomerId = UUID.fromString("6e148bd5-47f6-4022-b9da-07cfaa294f7a");
+  private static final UUID validProductId = UUID.fromString("fffe6ec2-7103-48b3-8e4f-3b58e43fb75a");
 
 
   @BeforeEach
@@ -164,5 +168,34 @@ public class OrderControllerIT {
         .contentType(MediaType.APPLICATION_PROBLEM_JSON_VALUE)
         .statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
     }
+
+  @Test
+  public void shouldCreateOrderUsingProduct_DTO() {
+    BuyNowInput input = BuyNowInputTestDataBuilder.aBuyNowInput()
+      .productId(validProductId)
+      .customerId(validCustomerId)
+      .build();
+
+    OrderDetailOutput orderDetailOutput = RestAssured
+      .given()
+        .accept(MediaType.APPLICATION_JSON_VALUE)
+        .contentType("application/vnd.order-with-product.v1+json")
+        .body(input)
+      .when()
+        .post("/api/v1/orders")
+      .then()
+        .assertThat()
+        .contentType(MediaType.APPLICATION_JSON_VALUE)
+        .statusCode(HttpStatus.CREATED.value())
+        .body("id", Matchers.not(Matchers.emptyString()),
+          "customer.id", Matchers.is(validCustomerId.toString()))
+      .extract()
+        .body().as(OrderDetailOutput.class);
+
+    Assertions.assertThat(orderDetailOutput.getCustomer().getId()).isEqualTo(validCustomerId);
+
+    boolean orderExists = orderRepository.existsById(new OrderId(orderDetailOutput.getId()).value().toLong());
+    Assertions.assertThat(orderExists).isTrue();
+  }
 
 }
