@@ -54,6 +54,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.assertj:assertj-core:3.27.2'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
     mockitoAgent('org.mockito:mockito-core:5.14.2') {transitive = false}
 }
 
