@@ -13,7 +13,7 @@ import com.algaworks.algashop.ordering.domain.model.order.Billing;
 import org.springframework.stereotype.Component;
 
 @Component
-class BillingInputDisassembler {
+public class BillingInputDisassembler {
 
     public Billing toDomainModel(BillingData billingData) {
         AddressData address = billingData.getAddress();

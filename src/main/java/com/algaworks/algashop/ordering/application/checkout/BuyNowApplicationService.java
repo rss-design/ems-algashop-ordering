@@ -41,7 +41,6 @@ public class BuyNowApplicationService {
     private final BillingInputDisassembler billingInputDisassembler;
 
     @Transactional
-
     public String buyNow(BuyNowInput input){
       Objects.requireNonNull(input);
 

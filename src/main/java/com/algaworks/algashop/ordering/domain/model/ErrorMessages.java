@@ -12,6 +12,9 @@ public class ErrorMessages {
 
     public static final String ERROR_CUSTOMER_ARCHIVED
         = "Customer is archived and cannot be changed";
+  public static String ERROR_CUSTOMER_IS_IN_USE
+        = "Customer email is in use";
+
     public static final String ERROR_PRODUCT_IS_OUT_OF_STOCK
         = "Product %s is out of stock";
 
