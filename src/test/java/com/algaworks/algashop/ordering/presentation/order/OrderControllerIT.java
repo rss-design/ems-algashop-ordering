@@ -11,8 +11,11 @@ import com.algaworks.algashop.ordering.utils.AlgaShopResourceUtils;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.extension.responsetemplating.ResponseTemplateTransformer;
 import io.restassured.RestAssured;
-import io.restassured.config.JsonConfig;
 import io.restassured.path.json.config.JsonPathConfig;
+import java.util.UUID;
+import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
+import static io.restassured.config.JsonConfig.jsonConfig;
+
 import org.assertj.core.api.Assertions;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
@@ -21,19 +24,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.cloud.contract.stubrunner.spring.AutoConfigureStubRunner;
-import org.springframework.cloud.contract.stubrunner.spring.StubRunnerProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-
-import java.util.UUID;
-
-import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.options;
-import static io.restassured.config.JsonConfig.*;
+import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //@AutoConfigureStubRunner(stubsMode = StubRunnerProperties.StubsMode.LOCAL,
 //        ids = "com.algaworks.algashop:product-catalog:0.0.1-SNAPSHOT:8781")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class OrderControllerIT {
 
   @LocalServerPort
@@ -85,10 +83,6 @@ public class OrderControllerIT {
   }
 
   private void initDatabase() {
-    if (databaseInitialized) {
-      return;
-    }
-
     customerRepository.saveAndFlush(
       CustomerPersistenceEntityTestDataBuilder.aCustomer().id(validCustomerId).build()
     );
