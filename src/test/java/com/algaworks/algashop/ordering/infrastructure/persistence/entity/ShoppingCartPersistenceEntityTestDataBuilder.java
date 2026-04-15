@@ -35,6 +35,7 @@ public class ShoppingCartPersistenceEntityTestDataBuilder {
             .quantity(2)
             .totalAmount(new BigDecimal(1000))
             .name("Notebook")
+            .available(true)
             .productId(IdGenerator.generateTimeBasedUUID());
     }
 
@@ -45,6 +46,7 @@ public class ShoppingCartPersistenceEntityTestDataBuilder {
             .quantity(1)
             .totalAmount(new BigDecimal(250))
             .name("Mouse pad")
+            .available(true)
             .productId(IdGenerator.generateTimeBasedUUID());
     }
 }
