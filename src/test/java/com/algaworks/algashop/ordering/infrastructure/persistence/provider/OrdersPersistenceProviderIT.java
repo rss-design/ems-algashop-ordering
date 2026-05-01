@@ -63,9 +63,9 @@ class OrdersPersistenceProviderIT {
 
         Assertions.assertThat(persistenceEntity.getStatus()).isEqualTo(OrderStatus.PLACED.name());
 
-        Assertions.assertThat(persistenceEntity.getCreatedByUSerId()).isNotNull();
+        Assertions.assertThat(persistenceEntity.getCreatedByUserId()).isNotNull();
         Assertions.assertThat(persistenceEntity.getLastModifiedAt()).isNotNull();
-        Assertions.assertThat(persistenceEntity.getLasModifiedByUserId()).isNotNull();
+        Assertions.assertThat(persistenceEntity.getLastModifiedByUserId()).isNotNull();
 
         order = persistenceProvider.ofId(order.id()).orElseThrow();
         order.markAsPaid();
@@ -75,9 +75,9 @@ class OrdersPersistenceProviderIT {
 
         Assertions.assertThat(persistenceEntity.getStatus()).isEqualTo(OrderStatus.PAID.name());
 
-        Assertions.assertThat(persistenceEntity.getCreatedByUSerId()).isNotNull();
+        Assertions.assertThat(persistenceEntity.getCreatedByUserId()).isNotNull();
         Assertions.assertThat(persistenceEntity.getLastModifiedAt()).isNotNull();
-        Assertions.assertThat(persistenceEntity.getLasModifiedByUserId()).isNotNull();
+        Assertions.assertThat(persistenceEntity.getLastModifiedByUserId()).isNotNull();
     }
 
     @Test

@@ -1,5 +1,6 @@
 package com.algaworks.algashop.ordering.infrastructure.persistence.order;
 
+import com.algaworks.algashop.ordering.domain.model.commons.Email;
 import com.algaworks.algashop.ordering.domain.model.order.Order;
 import com.algaworks.algashop.ordering.domain.model.order.OrderItem;
 import com.algaworks.algashop.ordering.domain.model.order.OrderStatus;
@@ -85,6 +86,7 @@ public class OrderPersistenceEntityDisassembler {
             .document(new Document(billingEmbeddable.getDocument()))
             .phone(new Phone(billingEmbeddable.getPhone()))
             .address(toAddressValueObject(billingEmbeddable.getAddress()))
+            .email(new Email(billingEmbeddable.getEmail()))
             .build();
     }
 
