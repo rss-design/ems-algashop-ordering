@@ -1,7 +1,6 @@
 package com.algaworks.algashop.ordering.presentation.shoppingcart;
 
 import com.algaworks.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityRepository;
-import com.algaworks.algashop.ordering.infrastructure.persistence.entity.CustomerPersistenceEntityTestDataBuilder;
 import com.algaworks.algashop.ordering.infrastructure.persistence.shoppingcart.ShoppingCartPersistenceEntity;
 import com.algaworks.algashop.ordering.infrastructure.persistence.shoppingcart.ShoppingCartPersistenceEntityRepository;
 import com.algaworks.algashop.ordering.utils.AlgaShopResourceUtils;
@@ -28,7 +27,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = "classpath:db/clean/afterMigrate.sql", executionPhase =  Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(scripts = "classpath:db/testdata/afterMigrate.sql", executionPhase =  Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(scripts = "classpath:db/clean/afterMigrate.sql", executionPhase =  Sql.ExecutionPhase.AFTER_TEST_CLASS)
 public class ShoppingCartControllerIT {
 
   @LocalServerPort
@@ -53,7 +53,6 @@ public class ShoppingCartControllerIT {
       jsonConfig().numberReturnType(JsonPathConfig.NumberReturnType.BIG_DECIMAL)
     );
 
-    initiDatabase();
     initWireMock();
   }
 
@@ -78,12 +77,6 @@ public class ShoppingCartControllerIT {
 
     wireMockRapidex.start();
     wireMockProductCatalog.start();
-  }
-
-  private void initiDatabase() {
-    customerRepository.saveAndFlush(
-      CustomerPersistenceEntityTestDataBuilder.aCustomer().id(validCustomerId).build()
-    );
   }
 
   @Test

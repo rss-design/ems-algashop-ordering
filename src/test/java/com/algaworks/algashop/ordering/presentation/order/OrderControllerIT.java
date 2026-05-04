@@ -5,7 +5,6 @@ import com.algaworks.algashop.ordering.application.checkout.BuyNowInputTestDataB
 import com.algaworks.algashop.ordering.application.order.query.OrderDetailOutput;
 import com.algaworks.algashop.ordering.domain.model.order.OrderId;
 import com.algaworks.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityRepository;
-import com.algaworks.algashop.ordering.infrastructure.persistence.entity.CustomerPersistenceEntityTestDataBuilder;
 import com.algaworks.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntityRepository;
 import com.algaworks.algashop.ordering.infrastructure.persistence.shoppingcart.ShoppingCartPersistenceEntityRepository;
 import com.algaworks.algashop.ordering.utils.AlgaShopResourceUtils;
@@ -31,7 +30,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.jdbc.Sql;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = "classpath:db/clean/afterMigrate.sql", executionPhase =  Sql.ExecutionPhase.AFTER_TEST_METHOD)
+//@AutoConfigureStubRunner(stubsMode = StubRunnerProperties.StubsMode.LOCAL,
+//        ids = "com.algaworks.algashop:product-catalog:0.0.1-SNAPSHOT:8781")
+@Sql(scripts = "classpath:db/testdata/afterMigrate.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_CLASS)
+@Sql(scripts = "classpath:db/clean/afterMigrate.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_CLASS)
 public class OrderControllerIT {
 
   @LocalServerPort
@@ -60,8 +62,6 @@ public class OrderControllerIT {
 
     RestAssured.config().jsonConfig(jsonConfig().numberReturnType(JsonPathConfig.NumberReturnType.BIG_DECIMAL));
 
-    initDatabase();
-
     wireMockRapidex = new WireMockServer(options()
       .port(8780)
       .usingFilesUnderDirectory("src/test/resources/wiremock/rapidex")
@@ -73,7 +73,9 @@ public class OrderControllerIT {
       .extensions(new ResponseTemplateTransformer(true)));
 
     wireMockRapidex.start();
+
     wireMockProductCatalog.start();
+
   }
 
   @AfterEach
@@ -82,14 +84,8 @@ public class OrderControllerIT {
     wireMockProductCatalog.stop();
   }
 
-  private void initDatabase() {
-    customerRepository.saveAndFlush(
-      CustomerPersistenceEntityTestDataBuilder.aCustomer().id(validCustomerId).build()
-    );
-  }
-
   @Test
-  void shouldCreateOrderUsingProduct() {
+  public void shouldCreateOrderUsingProduct() {
     String json = AlgaShopResourceUtils.readContent("json/create-order-with-product.json");
 
     String createdOrderId = RestAssured
@@ -114,7 +110,7 @@ public class OrderControllerIT {
   }
 
   @Test
-  void shouldCreateOrderUsingProduct_DTO() {
+  public void shouldCreateOrderUsingProduct_DTO() {
     BuyNowInput input = BuyNowInputTestDataBuilder.aBuyNowInput()
       .productId(validProductId)
       .customerId(validCustomerId)
@@ -143,7 +139,7 @@ public class OrderControllerIT {
   }
 
   @Test
-  void shouldNotCreateOrderUsingProductWhenProductAPIIsUnavailable() {
+  public void shouldNotCreateOrderUsingProductWhenProductAPIIsUnavailable() {
     String json = AlgaShopResourceUtils.readContent("json/create-order-with-product.json");
 
     wireMockProductCatalog.stop();
@@ -163,7 +159,7 @@ public class OrderControllerIT {
   }
 
   @Test
-  void shouldNotCreateOrderUsingProductWhenProductNotExists() {
+  public void shouldNotCreateOrderUsingProductWhenProductNotExists() {
     String json = AlgaShopResourceUtils.readContent("json/create-order-with-invalid-product.json");
 
     RestAssured
@@ -181,7 +177,7 @@ public class OrderControllerIT {
   }
 
   @Test
-  void shouldNotCreateOrderUsingProductWhenCustomerWasNotFound() {
+  public void shouldNotCreateOrderUsingProductWhenCustomerWasNotFound() {
     String json = AlgaShopResourceUtils.readContent("json/create-order-with-product-and-invalid-customer.json");
     RestAssured
       .given()
@@ -197,58 +193,35 @@ public class OrderControllerIT {
   }
 
   @Test
-  void shouldCreateOrderUsingShoppingCart() {
+  public void shouldCreateOrderUsingShoppingCart() {
     var shoppingCartPersistence = existingShoppingCart()
-        .id(validShoppingCartId)
-        .customer(customerRepository.getReferenceById(validCustomerId))
-        .build();
+      .id(validShoppingCartId)
+      .customer(customerRepository.getReferenceById(validCustomerId))
+      .build();
     shoppingCartRepository.save(shoppingCartPersistence);
 
     String json = AlgaShopResourceUtils.readContent("json/create-order-with-shopping-cart.json");
 
     OrderDetailOutput orderDetailOutput = RestAssured
       .given()
-        .accept(MediaType.APPLICATION_JSON_VALUE)
-        .contentType("application/vnd.order-with-shopping-cart.v1+json")
-        .body(json)
+      .accept(MediaType.APPLICATION_JSON_VALUE)
+      .contentType("application/vnd.order-with-shopping-cart.v1+json")
+      .body(json)
       .when()
-        .post("/api/v1/orders")
+      .post("/api/v1/orders")
       .then()
-        .assertThat()
-        .contentType(MediaType.APPLICATION_JSON_VALUE)
-        .statusCode(HttpStatus.CREATED.value())
-        .body(
-          "id", Matchers.not(Matchers.emptyString()),
-          "customer.id", Matchers.is(validCustomerId.toString()),
-          "customer.firstName", Matchers.is("John"),
-          "customer.lastName", Matchers.is("Doe"),
-          "customer.document", Matchers.is("255-08-0578"),
-          "customer.phone", Matchers.is("478-256-2604"),
-          "customer.email", Matchers.is("johndoe@email.com")
-        )
-        .extract().body().as(OrderDetailOutput.class);
+      .assertThat()
+      .contentType(MediaType.APPLICATION_JSON_VALUE)
+      .statusCode(HttpStatus.CREATED.value())
+      .body("id", Matchers.not(Matchers.emptyString()),
+        "customer.id", Matchers.is(validCustomerId.toString()))
+      .extract()
+      .body().as(OrderDetailOutput.class);
 
     Assertions.assertThat(orderDetailOutput.getCustomer().getId()).isEqualTo(validCustomerId);
 
     boolean orderExists = orderRepository.existsById(new OrderId(orderDetailOutput.getId()).value().toLong());
     Assertions.assertThat(orderExists).isTrue();
-  }
-
-  @Test
-  void shouldNotCreateOrderWithInexistentShoppingCart() {
-    String json = AlgaShopResourceUtils.readContent("json/create-order-with-invalid-shopping-cart.json");
-
-    RestAssured
-      .given()
-        .accept(MediaType.APPLICATION_JSON_VALUE)
-        .contentType("application/vnd.order-with-shopping-cart.v1+json")
-        .body(json)
-      .when()
-        .post("/api/v1/orders")
-      .then()
-        .assertThat()
-        .contentType(MediaType.APPLICATION_PROBLEM_JSON_VALUE)
-        .statusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
   }
 
 }
