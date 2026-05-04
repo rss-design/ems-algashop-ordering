@@ -19,6 +19,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @DataJpaTest
 @Import({
@@ -46,17 +48,18 @@ class OrdersPersistenceProviderIT {
     }
 
     @BeforeEach
-    void setUp() {
-        if (!customersPersistenceProvider.exists(CustomerTestDataBuilder.DEFAULT_CUSTOMER_ID)) {
-            customersPersistenceProvider.add(CustomerTestDataBuilder.existingCustomer().build());
-        }
+    public void setup() {
+      if (!customersPersistenceProvider.exists(CustomerTestDataBuilder.DEFAULT_CUSTOMER_ID)) {
+        customersPersistenceProvider.add(
+          CustomerTestDataBuilder.existingCustomer().build()
+        );
+      }
     }
 
     @Test
-    void shouldUpdateAndKeepPersistenceEntityState() {
+    public void shouldUpdateAndKeepPersistenceEntityState() {
         Order order = OrderTestDataBuilder.anOrder().status(OrderStatus.PLACED).build();
         long orderId = order.id().value().toLong();
-
         persistenceProvider.add(order);
 
         var persistenceEntity = entityRepository.findById(orderId).orElseThrow();
@@ -78,15 +81,17 @@ class OrdersPersistenceProviderIT {
         Assertions.assertThat(persistenceEntity.getCreatedByUserId()).isNotNull();
         Assertions.assertThat(persistenceEntity.getLastModifiedAt()).isNotNull();
         Assertions.assertThat(persistenceEntity.getLastModifiedByUserId()).isNotNull();
+
     }
 
     @Test
-    void shouldAddFindAndNotFailWhenNoTransaction() {
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public void shouldAddFindAndNotFailWhenNoTransaction() {
         Order order = OrderTestDataBuilder.anOrder().build();
         persistenceProvider.add(order);
 
         Assertions.assertThatNoException().isThrownBy(
-            () -> persistenceProvider.ofId(order.id()).orElseThrow()
+                ()-> persistenceProvider.ofId(order.id()).orElseThrow()
         );
     }
 
