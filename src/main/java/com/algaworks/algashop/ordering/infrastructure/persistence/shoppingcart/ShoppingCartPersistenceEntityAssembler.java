@@ -3,11 +3,11 @@ package com.algaworks.algashop.ordering.infrastructure.persistence.shoppingcart;
 import com.algaworks.algashop.ordering.domain.model.shoppingcart.ShoppingCart;
 import com.algaworks.algashop.ordering.domain.model.shoppingcart.ShoppingCartItem;
 import com.algaworks.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-
 import java.util.Set;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
@@ -26,13 +26,21 @@ public class ShoppingCartPersistenceEntityAssembler {
         persistenceEntity.setTotalAmount(shoppingCart.totalAmount().value());
         persistenceEntity.setTotalItems(shoppingCart.totalItems().value());
         persistenceEntity.setCreatedAt(shoppingCart.createdAt());
-        persistenceEntity.replaceItems(toOrderItemsEntities(shoppingCart.items()));
+        persistenceEntity.replaceItems(toMergedItemEntities(shoppingCart.items(), persistenceEntity.getItems()));
         persistenceEntity.addEvent(shoppingCart.domainEvents());
         return persistenceEntity;
     }
 
-    private Set<ShoppingCartItemPersistenceEntity> toOrderItemsEntities(Set<ShoppingCartItem> source) {
-        return source.stream().map(i -> this.mergeItem(new ShoppingCartItemPersistenceEntity(), i)).collect(Collectors.toSet());
+    private Set<ShoppingCartItemPersistenceEntity> toMergedItemEntities(
+            Set<ShoppingCartItem> domainItems,
+            Set<ShoppingCartItemPersistenceEntity> existingItems) {
+        return domainItems.stream().map(domainItem -> {
+            ShoppingCartItemPersistenceEntity existing = existingItems.stream()
+                .filter(e -> e.getId().equals(domainItem.id().value()))
+                .findFirst()
+                .orElse(new ShoppingCartItemPersistenceEntity());
+            return mergeItem(existing, domainItem);
+        }).collect(Collectors.toSet());
     }
 
     private ShoppingCartItemPersistenceEntity mergeItem(ShoppingCartItemPersistenceEntity persistenceEntity, ShoppingCartItem shoppingCartItem
@@ -45,18 +53,5 @@ public class ShoppingCartPersistenceEntityAssembler {
         persistenceEntity.setAvailable(shoppingCartItem.isAvailable());
         persistenceEntity.setTotalAmount(shoppingCartItem.totalAmount().value());
         return persistenceEntity;
-    }
-
-    private ShoppingCartItemPersistenceEntity toOrderItemsEntities(ShoppingCartItem source) {
-        return ShoppingCartItemPersistenceEntity.builder()
-            .id(source.id().value())
-            .shoppingCart(ShoppingCartPersistenceEntity.builder().id(source.shoppingCartId().value()).build())
-            .productId(source.productId().value())
-            .name(source.name().value())
-            .price(source.price().value())
-            .quantity(source.quantity().value())
-            .available(source.isAvailable())
-            .totalAmount(source.totalAmount().value())
-            .build();
     }
 }

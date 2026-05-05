@@ -18,30 +18,28 @@ import org.springframework.web.client.ResourceAccessException;
 @RequiredArgsConstructor
 public class ProductCatalogServiceHttpImpl implements ProductCatalogService {
 
-  private final ProductCatalogApiClient productCatalogApiClient;
+  private final ProductCatalogApiClient productCatalogAPIClient;
 
   @Override
   public Optional<Product> ofId(ProductId productId) {
     ProductResponse productResponse;
-
     try {
-      productResponse = productCatalogApiClient.getById(productId.value());
+      productResponse = productCatalogAPIClient.getById(productId.value());
     } catch (ResourceAccessException e) {
-      throw new GatewayTimeoutException("Product Catalog API Timeout",e);
+      throw new GatewayTimeoutException("Product Catalog API Timeout", e);
     } catch (HttpClientErrorException.NotFound e) {
       return Optional.empty();
     } catch (HttpClientErrorException e) {
-      throw new BadGatewayException("Product Catalog API Bad Gateway",e);
+      throw new BadGatewayException("Product Catalog API Bad Gateway", e);
     }
 
     return Optional.of(
       Product.builder()
         .id(new ProductId(productResponse.getId()))
         .name(new ProductName(productResponse.getName()))
-        .price(new Money(productResponse.getSalePrice()))
         .inStock(productResponse.getInStock())
+        .price(new Money(productResponse.getSalePrice()))
         .build()
     );
   }
-
 }

@@ -13,8 +13,8 @@ import com.algaworks.algashop.ordering.infrastructure.persistence.shoppingcart.S
 import com.algaworks.algashop.ordering.infrastructure.persistence.shoppingcart.ShoppingCartPersistenceEntityDisassembler;
 import com.algaworks.algashop.ordering.infrastructure.persistence.shoppingcart.ShoppingCartPersistenceEntityRepository;
 import com.algaworks.algashop.ordering.infrastructure.persistence.shoppingcart.ShoppingCartPersistenceProvider;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatNoException;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,113 +27,122 @@ import org.springframework.transaction.annotation.Transactional;
 
 @DataJpaTest
 @Import({
-    ShoppingCartPersistenceProvider.class,
-    ShoppingCartPersistenceEntityAssembler.class,
-    ShoppingCartPersistenceEntityDisassembler.class,
-    CustomersPersistenceProvider.class,
-    CustomerPersistenceEntityAssembler.class,
-    CustomerPersistenceEntityDisassembler.class,
-    SpringDataAuditingConfig.class
+  ShoppingCartPersistenceProvider.class,
+  ShoppingCartPersistenceEntityAssembler.class,
+  ShoppingCartPersistenceEntityDisassembler.class,
+  CustomersPersistenceProvider.class,
+  CustomerPersistenceEntityAssembler.class,
+  CustomerPersistenceEntityDisassembler.class,
+  SpringDataAuditingConfig.class
 })
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @TestPropertySource(properties = "spring.flyway.locations=classpath:db/migration,classpath:db/testdata")
-class ShoppingCartsPersistenceProviderIT {
+class ShoppingCartPersistenceProviderIT {
 
-    private final CustomersPersistenceProvider customersPersistenceProvider;
-    private final ShoppingCartPersistenceProvider persistenceProvider;
-    private final ShoppingCartPersistenceEntityRepository entityRepository;
+  private final ShoppingCartPersistenceProvider persistenceProvider;
+  private final CustomersPersistenceProvider customersPersistenceProvider;
+  private final ShoppingCartPersistenceEntityRepository entityRepository;
 
-    @Autowired
-    public ShoppingCartsPersistenceProviderIT(ShoppingCartPersistenceProvider persistenceProvider,
-                                              CustomersPersistenceProvider customersPersistenceProvider,
-                                              ShoppingCartPersistenceEntityRepository entityRepository) {
-        this.persistenceProvider = persistenceProvider;
-        this.customersPersistenceProvider = customersPersistenceProvider;
-        this.entityRepository = entityRepository;
-    }
+  @Autowired
+  public ShoppingCartPersistenceProviderIT(ShoppingCartPersistenceProvider persistenceProvider,
+                                            CustomersPersistenceProvider customersPersistenceProvider,
+                                            ShoppingCartPersistenceEntityRepository entityRepository) {
+    this.persistenceProvider = persistenceProvider;
+    this.customersPersistenceProvider = customersPersistenceProvider;
+    this.entityRepository = entityRepository;
+  }
 
-    @Test
-    void shouldAddAndFindShoppingCart() {
-        ShoppingCart shoppingCart = ShoppingCartTestDataBuilder.aShoppingCart().build();
-        assertThat(shoppingCart.version()).isNull();
+  @Test
+  public void shouldAddAndFindShoppingCart() {
+    Customer customer = CustomerTestDataBuilder.brandNewCustomer().build();
+    customersPersistenceProvider.add(customer);
+    ShoppingCart shoppingCart = ShoppingCartTestDataBuilder.aShoppingCart().customerId(customer.id()).build();
+    assertThat(shoppingCart.version()).isNull();
 
-        persistenceProvider.add(shoppingCart);
-        assertThat(customersPersistenceProvider.exists(CustomerTestDataBuilder.DEFAULT_CUSTOMER_ID)).isTrue();
+    persistenceProvider.add(shoppingCart);
 
-        assertThat(shoppingCart.version()).isNotNull().isEqualTo(0L);
+    assertThat(shoppingCart.version()).isNotNull().isEqualTo(0L);
 
-        ShoppingCart foundCart = persistenceProvider.ofId(shoppingCart.id()).orElseThrow();
-        assertThat(foundCart).isNotNull();
-        assertThat(foundCart.id()).isEqualTo(shoppingCart.id());
-        assertThat(foundCart.totalItems().value()).isEqualTo(3);
-    }
+    ShoppingCart foundCart = persistenceProvider.ofId(shoppingCart.id()).orElseThrow();
+    assertThat(foundCart).isNotNull();
+    assertThat(foundCart.id()).isEqualTo(shoppingCart.id());
+    assertThat(foundCart.totalItems().value()).isEqualTo(3);
+  }
 
-    @Test
-    void shouldRemoveShoppingCartById() {
-        ShoppingCart shoppingCart = ShoppingCartTestDataBuilder.aShoppingCart().build();
-        persistenceProvider.add(shoppingCart);
-        assertThat(persistenceProvider.exists(shoppingCart.id())).isTrue();
+  @Test
+  public void shouldRemoveShoppingCartById() {
+    Customer customer = CustomerTestDataBuilder.brandNewCustomer().build();
+    customersPersistenceProvider.add(customer);
+    ShoppingCart shoppingCart = ShoppingCartTestDataBuilder.aShoppingCart().customerId(customer.id()).build();
+    persistenceProvider.add(shoppingCart);
+    assertThat(persistenceProvider.exists(shoppingCart.id())).isTrue();
 
-        persistenceProvider.remove(shoppingCart.id());
+    persistenceProvider.remove(shoppingCart.id());
 
-        assertThat(persistenceProvider.exists(shoppingCart.id())).isFalse();
-        assertThat(entityRepository.findById(shoppingCart.id().value())).isEmpty();
-    }
+    assertThat(persistenceProvider.exists(shoppingCart.id())).isFalse();
+    assertThat(entityRepository.findById(shoppingCart.id().value())).isEmpty();
+  }
 
-    @Test
-    void shouldRemoveShoppingCartByEntity() {
-        ShoppingCart shoppingCart = ShoppingCartTestDataBuilder.aShoppingCart().build();
-        persistenceProvider.add(shoppingCart);
-        assertThat(persistenceProvider.exists(shoppingCart.id())).isTrue();
+  @Test
+  public void shouldRemoveShoppingCartByEntity() {
+    Customer customer = CustomerTestDataBuilder.brandNewCustomer().build();
+    customersPersistenceProvider.add(customer);
+    ShoppingCart shoppingCart = ShoppingCartTestDataBuilder.aShoppingCart().customerId(customer.id()).build();
+    persistenceProvider.add(shoppingCart);
+    assertThat(persistenceProvider.exists(shoppingCart.id())).isTrue();
 
-        persistenceProvider.remove(shoppingCart);
+    persistenceProvider.remove(shoppingCart);
 
-        assertThat(persistenceProvider.exists(shoppingCart.id())).isFalse();
-    }
+    assertThat(persistenceProvider.exists(shoppingCart.id())).isFalse();
+  }
 
-    @Test
-    void shouldFindShoppingCartByCustomerId() {
-        ShoppingCart shoppingCart = ShoppingCartTestDataBuilder.aShoppingCart()
-            .customerId(CustomerTestDataBuilder.DEFAULT_CUSTOMER_ID)
-            .build();
-        persistenceProvider.add(shoppingCart);
+  @Test
+  public void shouldFindShoppingCartByCustomerId() {
+    Customer customer = CustomerTestDataBuilder.brandNewCustomer().build();
+    customersPersistenceProvider.add(customer);
+    ShoppingCart shoppingCart = ShoppingCartTestDataBuilder.aShoppingCart().customerId(customer.id()).build();
+    persistenceProvider.add(shoppingCart);
 
-        ShoppingCart foundCart = persistenceProvider.ofCustomer(CustomerTestDataBuilder.DEFAULT_CUSTOMER_ID).orElseThrow();
+    ShoppingCart foundCart = persistenceProvider.ofCustomer(customer.id()).orElseThrow();
 
-        assertThat(foundCart).isNotNull();
-        assertThat(foundCart.customerId()).isEqualTo(CustomerTestDataBuilder.DEFAULT_CUSTOMER_ID);
-        assertThat(foundCart.id()).isEqualTo(shoppingCart.id());
-    }
+    assertThat(foundCart).isNotNull();
+    assertThat(foundCart.customerId()).isEqualTo(customer.id());
+    assertThat(foundCart.id()).isEqualTo(shoppingCart.id());
+  }
 
-    @Test
-    void shouldCorrectlyCountShoppingCarts() {
-        long initialCount = persistenceProvider.count();
+  @Test
+  public void shouldCorrectlyCountShoppingCarts() {
+    long initialCount = persistenceProvider.count();
 
-        ShoppingCart cart1 = ShoppingCartTestDataBuilder.aShoppingCart().build();
-        persistenceProvider.add(cart1);
+    Customer customer = CustomerTestDataBuilder.brandNewCustomer().build();
+    customersPersistenceProvider.add(customer);
 
-        Customer otherCustomer = CustomerTestDataBuilder.existingCustomer().id(new CustomerId()).build();
-        customersPersistenceProvider.add(otherCustomer);
+    ShoppingCart cart1 = ShoppingCartTestDataBuilder.aShoppingCart().customerId(customer.id()).build();
+    persistenceProvider.add(cart1);
 
-        ShoppingCart cart2 = ShoppingCartTestDataBuilder.aShoppingCart().customerId(otherCustomer.id()).build();
-        persistenceProvider.add(cart2);
+    Customer otherCustomer = CustomerTestDataBuilder.existingCustomer().id(new CustomerId()).build();
+    customersPersistenceProvider.add(otherCustomer);
 
-        long finalCount = persistenceProvider.count();
+    ShoppingCart cart2 = ShoppingCartTestDataBuilder.aShoppingCart().customerId(otherCustomer.id()).build();
+    persistenceProvider.add(cart2);
 
-        assertThat(finalCount).isEqualTo(initialCount + 2);
-    }
+    long finalCount = persistenceProvider.count();
 
-    @Test
-    @Transactional(propagation = Propagation.NOT_SUPPORTED)
-    public void shouldAddAndFindWhenNoTransaction() {
-        ShoppingCart shoppingCart = ShoppingCartTestDataBuilder.aShoppingCart().build();
+    assertThat(finalCount).isEqualTo(initialCount + 2);
+  }
 
-        persistenceProvider.add(shoppingCart);
+  @Test
+  @Transactional(propagation = Propagation.NOT_SUPPORTED)
+  public void shouldAddAndFindWhenNoTransaction() {
+    Customer customer = CustomerTestDataBuilder.brandNewCustomer().build();
+    customersPersistenceProvider.add(customer);
+    ShoppingCart shoppingCart = ShoppingCartTestDataBuilder.aShoppingCart().customerId(customer.id()).build();
 
-        assertThatNoException().isThrownBy(() -> {
-            ShoppingCart foundCart = persistenceProvider.ofId(shoppingCart.id()).orElseThrow();
-            assertThat(foundCart).isNotNull();
-        });
-    }
+    persistenceProvider.add(shoppingCart);
 
+    assertThatNoException().isThrownBy(() -> {
+      ShoppingCart foundCart = persistenceProvider.ofId(shoppingCart.id()).orElseThrow();
+      assertThat(foundCart).isNotNull();
+    });
+  }
 }

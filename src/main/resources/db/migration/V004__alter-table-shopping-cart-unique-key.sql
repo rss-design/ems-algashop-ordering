@@ -1,0 +1,1 @@
+alter table public.shopping_cart add constraint uk_shopping_cart_customer_id unique (customer_id);
