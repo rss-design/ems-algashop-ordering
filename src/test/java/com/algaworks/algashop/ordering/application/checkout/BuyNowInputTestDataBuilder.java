@@ -5,6 +5,7 @@ import com.algaworks.algashop.ordering.application.order.query.BillingData;
 import com.algaworks.algashop.ordering.application.order.query.RecipientData;
 import com.algaworks.algashop.ordering.domain.model.customer.CustomerTestDataBuilder;
 import com.algaworks.algashop.ordering.domain.model.product.ProductTestDataBuilder;
+import java.util.UUID;
 
 public class BuyNowInputTestDataBuilder {
 
@@ -14,6 +15,7 @@ public class BuyNowInputTestDataBuilder {
             .customerId(CustomerTestDataBuilder.DEFAULT_CUSTOMER_ID.value())
             .quantity(2)
             .paymentMethod("CREDIT_CARD")
+            .creditCardId(UUID.randomUUID())
             .shipping(ShippingInput.builder()
                 .recipient(RecipientData.builder()
                     .firstName("John")

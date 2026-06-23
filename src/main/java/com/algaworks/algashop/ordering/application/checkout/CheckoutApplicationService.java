@@ -1,10 +1,12 @@
 package com.algaworks.algashop.ordering.application.checkout;
 
+import com.algaworks.algashop.ordering.domain.model.DomainException;
 import com.algaworks.algashop.ordering.domain.model.commons.ZipCode;
 import com.algaworks.algashop.ordering.domain.model.customer.Customer;
 import com.algaworks.algashop.ordering.domain.model.customer.CustomerNotFoundException;
 import com.algaworks.algashop.ordering.domain.model.customer.Customers;
 import com.algaworks.algashop.ordering.domain.model.order.CheckoutService;
+import com.algaworks.algashop.ordering.domain.model.order.CreditCardId;
 import com.algaworks.algashop.ordering.domain.model.order.Order;
 import com.algaworks.algashop.ordering.domain.model.order.Orders;
 import com.algaworks.algashop.ordering.domain.model.order.PaymentMethod;
@@ -45,6 +47,14 @@ public class CheckoutApplicationService {
     public String checkout(CheckoutInput input) {
         Objects.requireNonNull(input);
         PaymentMethod paymentMethod = PaymentMethod.valueOf(input.getPaymentMethod());
+        CreditCardId creditCardId = null;
+
+        if (paymentMethod == PaymentMethod.CREDIT_CARD) {
+          if (input.getCreditCardId() == null) {
+            throw new DomainException("Credit card id is required");
+          }
+          creditCardId = new CreditCardId(input.getCreditCardId());
+        }
 
         ShoppingCartId shoppingCartId = new ShoppingCartId(input.getShoppingCartId());
         ShoppingCart shoppingCart = shoppingCarts.ofId(shoppingCartId)
@@ -58,7 +68,7 @@ public class CheckoutApplicationService {
         Order order = checkoutService.checkout(customer, shoppingCart,
             billingInputDisassembler.toDomainModel(input.getBilling()),
             shippingInputDisassembler.toDomainModel(input.getShipping(), shippingCalculationResult),
-            paymentMethod);
+            paymentMethod, creditCardId);
 
         orders.add(order);
         shoppingCarts.add(shoppingCart);

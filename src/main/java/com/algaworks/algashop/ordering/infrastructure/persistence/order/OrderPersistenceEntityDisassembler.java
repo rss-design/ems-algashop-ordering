@@ -1,6 +1,7 @@
 package com.algaworks.algashop.ordering.infrastructure.persistence.order;
 
 import com.algaworks.algashop.ordering.domain.model.commons.Email;
+import com.algaworks.algashop.ordering.domain.model.order.CreditCardId;
 import com.algaworks.algashop.ordering.domain.model.order.Order;
 import com.algaworks.algashop.ordering.domain.model.order.OrderItem;
 import com.algaworks.algashop.ordering.domain.model.order.OrderStatus;
@@ -31,6 +32,12 @@ import org.springframework.stereotype.Component;
 public class OrderPersistenceEntityDisassembler {
 
     public Order toDomainEntity(OrderPersistenceEntity persistenceEntity) {
+
+        CreditCardId creditCardId = null;
+        if (persistenceEntity.getCreditCardId() != null) {
+            creditCardId = new CreditCardId(persistenceEntity.getCreditCardId());
+        }
+
         return Order.existing()
             .id(new OrderId(persistenceEntity.getId()))
             .customerId(new CustomerId(persistenceEntity.getCustomerId()))
@@ -45,6 +52,7 @@ public class OrderPersistenceEntityDisassembler {
             .items(new HashSet<>())
             .version(persistenceEntity.getVersion())
             .items(toDomainEntity(persistenceEntity.getItems()))
+            .creditCardId(creditCardId)
             .build();
     }
 
