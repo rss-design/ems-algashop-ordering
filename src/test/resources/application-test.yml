@@ -1,13 +1,11 @@
 spring:
-  application:
-    name: ordering
   datasource:
     url: jdbc:postgresql://localhost:5432/ordering_test
     username: postgres
     password: postgres
     hikari:
       minimum-idle: 1
-      maximum-poll-size: 10
+      maximum-pool-size: 10
       connection-timeout: 3000
   jpa:
     hibernate:
@@ -18,7 +16,6 @@ spring:
     locations: classpath:db/migration,classpath:db/clean
     user: postgres
     password: postgres
-    schemas: public
     url: jdbc:postgresql://localhost:5432/ordering_test
 
 algashop:
