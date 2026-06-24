@@ -114,3 +114,46 @@ tasks.register('integrationTest', Test) {
         excludeTestsMatching "*Test"
     }
 }
+
+bootJar {
+    archiveFileName = 'ordering.jar'
+}
+
+tasks.register('dockerBuilderCreate', Exec) {
+    description = 'Creates (if absent) a Buildx builder that supports multi-platform builds'
+    group = 'build'
+    // The default "docker" driver cannot build multi-platform images.
+    // We need a builder backed by the "docker-container" driver.
+    // "|| true" keeps the build green when the builder already exists.
+    commandLine 'sh', '-c',
+            'docker buildx inspect algashop-builder >/dev/null 2>&1 || ' +
+            'docker buildx create --name algashop-builder --driver docker-container --use'
+}
+
+tasks.register('dockerBuild', Exec) {
+    description = 'Builds a multi-platform Docker image using Buildx'
+    group = 'build'
+    dependsOn('bootJar', 'dockerBuilderCreate')
+    workingDir project.rootDir
+    // --builder selects the multi-platform capable builder created above.
+    // Multi-platform images cannot be loaded into the local Docker daemon,
+    // so use --push to send them to a registry (or drop --platform for a local-only build).
+    commandLine 'docker', 'buildx', 'build',
+            '--builder', 'algashop-builder',
+            '--platform', 'linux/arm64/v8,linux/amd64',
+            '--tag', 'algashop/ordering:dev',
+            '--push',
+            '.'
+}
+
+tasks.register('dockerBuildLocal', Exec) {
+    description = 'Builds a single-platform Docker image and loads it into the local Docker daemon'
+    group = 'build'
+    dependsOn('bootJar')
+    workingDir project.rootDir
+    // Single platform + --load makes the image available for `docker run` locally.
+    commandLine 'docker', 'buildx', 'build',
+            '--tag', 'algashop/ordering:dev',
+            '--load',
+            '.'
+}
