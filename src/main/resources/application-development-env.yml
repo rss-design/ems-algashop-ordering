@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/ordering
+    url: jdbc:postgresql://algashop-postgres:5432/ordering
     username: postgres
     password: postgres
   jpa:
@@ -10,7 +10,7 @@ spring:
     locations: classpath:db/migration,classpath:db/testdata
     user: postgres
     password: postgres
-    url: jdbc:postgresql://localhost:5432/ordering
+    url: jdbc:postgresql://algashop-postgres:5432/ordering
 
 algashop:
   integrations:
