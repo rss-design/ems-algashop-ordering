@@ -1,27 +1,23 @@
 package com.algaworks.algashop.ordering.presentation.customer;
 
 import com.algaworks.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityRepository;
+import com.algaworks.algashop.ordering.presentation.AbstractPresentationIT;
 import com.algaworks.algashop.ordering.utils.AlgaShopResourceUtils;
 import io.restassured.RestAssured;
-import io.restassured.path.json.config.JsonPathConfig;
 import java.util.UUID;
-import static io.restassured.config.JsonConfig.jsonConfig;
 
 import org.assertj.core.api.Assertions;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.jdbc.Sql;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = "classpath:db/testdata/afterMigrate.sql", executionPhase =  Sql.ExecutionPhase.BEFORE_TEST_CLASS)
-@Sql(scripts = "classpath:db/clean/afterMigrate.sql", executionPhase =  Sql.ExecutionPhase.AFTER_TEST_CLASS)
-public class CustomerControllerIT {
+public class CustomerControllerIT extends AbstractPresentationIT {
 
   @LocalServerPort
   private int port;
@@ -33,13 +29,18 @@ public class CustomerControllerIT {
     UUID.fromString("6e148bd5-47f6-4022-b9da-07cfaa294f7a");
 
   @BeforeEach
-  public void setUp() {
-    RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
-    RestAssured.port = port;
+  public void setup() {
+    super.beforeEach();
+  }
 
-    RestAssured.config().jsonConfig(
-      jsonConfig().numberReturnType(JsonPathConfig.NumberReturnType.BIG_DECIMAL)
-    );
+  @BeforeAll
+  public static void setupBeforeAll() {
+    AbstractPresentationIT.initWireMock();
+  }
+
+  @AfterAll
+  public static void afterAll() {
+    AbstractPresentationIT.stopMock();
   }
 
   @Test
