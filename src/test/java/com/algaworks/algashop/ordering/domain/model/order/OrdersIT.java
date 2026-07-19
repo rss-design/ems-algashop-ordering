@@ -1,5 +1,6 @@
 package com.algaworks.algashop.ordering.domain.model.order;
 
+import com.algaworks.algashop.ordering.domain.model.AbstractRepositoryIT;
 import com.algaworks.algashop.ordering.domain.model.commons.Money;
 import com.algaworks.algashop.ordering.domain.model.customer.CustomerId;
 import com.algaworks.algashop.ordering.domain.model.customer.CustomerTestDataBuilder;
@@ -19,12 +20,9 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
-@DataJpaTest
 @Import({OrdersPersistenceProvider.class,
          OrderPersistenceEntityAssembler.class,
          OrderPersistenceEntityDisassembler.class,
@@ -32,11 +30,10 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
          CustomerPersistenceEntityAssembler.class,
          CustomerPersistenceEntityDisassembler.class
 })
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class OrdersIT {
+class OrdersIT extends AbstractRepositoryIT {
 
-    private Orders orders;
-    private Customers customers;
+    private final Orders orders;
+    private final Customers customers;
 
     @Autowired
     public OrdersIT(Orders orders, Customers customers) {

@@ -1,5 +1,6 @@
 package com.algaworks.algashop.ordering.infrastructure.listener.customer;
 
+import com.algaworks.algashop.ordering.application.AbstractApplicationIT;
 import com.algaworks.algashop.ordering.application.customer.loyaltypoints.CustomerLoyaltyPointsApplicationService;
 import com.algaworks.algashop.ordering.application.customer.notification.CustomerNotificationApplicationService;
 import com.algaworks.algashop.ordering.application.customer.notification.CustomerNotificationApplicationService.NotifyNewRegistrationInput;
@@ -15,13 +16,11 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 
-@SpringBootTest
-class CustomerEventListenerIT {
+class CustomerEventListenerIT extends AbstractApplicationIT {
 
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
@@ -33,7 +32,7 @@ class CustomerEventListenerIT {
     private CustomerLoyaltyPointsApplicationService loyaltyPointsApplicationService;
 
     @MockitoSpyBean
-    CustomerNotificationApplicationService notificationApplicationService;
+    private CustomerNotificationApplicationService notificationApplicationService;
 
     @Test
     void shouldListenOrderReadyEvent() {

@@ -9,6 +9,7 @@ import com.algaworks.algashop.ordering.domain.model.product.ProductTestDataBuild
 import com.algaworks.algashop.ordering.domain.model.shoppingcart.ShoppingCart;
 import com.algaworks.algashop.ordering.domain.model.shoppingcart.ShoppingCartItem;
 import com.algaworks.algashop.ordering.domain.model.shoppingcart.ShoppingCartTestDataBuilder;
+import com.algaworks.algashop.ordering.infrastructure.persistence.AbstractPersistenceIT;
 import com.algaworks.algashop.ordering.infrastructure.persistence.SpringDataAuditingConfig;
 import com.algaworks.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityAssembler;
 import com.algaworks.algashop.ordering.infrastructure.persistence.customer.CustomerPersistenceEntityDisassembler;
@@ -23,33 +24,29 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-@DataJpaTest
 @Import({
-    ShoppingCartUpdateProvider.class,
-    ShoppingCartPersistenceProvider.class,
-    ShoppingCartPersistenceEntityAssembler.class,
-    ShoppingCartPersistenceEntityDisassembler.class,
-    CustomersPersistenceProvider.class,
-    CustomerPersistenceEntityAssembler.class,
-    CustomerPersistenceEntityDisassembler.class,
-    SpringDataAuditingConfig.class
+  ShoppingCartUpdateProvider.class,
+  ShoppingCartPersistenceProvider.class,
+  ShoppingCartPersistenceEntityAssembler.class,
+  ShoppingCartPersistenceEntityDisassembler.class,
+  CustomersPersistenceProvider.class,
+  CustomerPersistenceEntityAssembler.class,
+  CustomerPersistenceEntityDisassembler.class,
+  SpringDataAuditingConfig.class
 })
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Sql(scripts = "classpath:db/clean/afterMigrate.sql", executionPhase =  Sql.ExecutionPhase.AFTER_TEST_METHOD)
-class ShoppingCartUpdateProviderIT {
+class ShoppingCartUpdateProviderIT extends AbstractPersistenceIT {
 
-    private CustomersPersistenceProvider customersPersistenceProvider;
-    private ShoppingCartPersistenceProvider persistenceProvider;
-    private ShoppingCartPersistenceEntityRepository entityRepository;
+    private final CustomersPersistenceProvider customersPersistenceProvider;
+    private final ShoppingCartPersistenceProvider persistenceProvider;
+    private final ShoppingCartPersistenceEntityRepository entityRepository;
 
-    private ShoppingCartUpdateProvider shoppingCartUpdateProvider;
+    private final ShoppingCartUpdateProvider shoppingCartUpdateProvider;
 
     @Autowired
     public ShoppingCartUpdateProviderIT(ShoppingCartPersistenceProvider persistenceProvider,
