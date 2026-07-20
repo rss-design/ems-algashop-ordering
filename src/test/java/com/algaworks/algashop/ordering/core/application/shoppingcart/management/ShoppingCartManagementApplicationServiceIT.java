@@ -1,6 +1,7 @@
 package com.algaworks.algashop.ordering.core.application.shoppingcart.management;
 
 import com.algaworks.algashop.ordering.core.application.AbstractApplicationIT;
+import com.algaworks.algashop.ordering.core.application.shoppingcart.ShoppingCartManagementApplicationService;
 import com.algaworks.algashop.ordering.core.domain.model.commons.Quantity;
 import com.algaworks.algashop.ordering.core.domain.model.customer.Customer;
 import com.algaworks.algashop.ordering.core.domain.model.customer.CustomerAlreadyHaveShoppingCartException;
@@ -22,6 +23,7 @@ import com.algaworks.algashop.ordering.core.domain.model.shoppingcart.ShoppingCa
 import com.algaworks.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartItemRemovedEvent;
 import com.algaworks.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartNotFoundException;
 import com.algaworks.algashop.ordering.core.domain.model.shoppingcart.ShoppingCarts;
+import com.algaworks.algashop.ordering.core.ports.in.shoppingcart.ShoppingCartItemInput;
 import com.algaworks.algashop.ordering.infrastructure.listener.shoppingcart.ShoppingCartEventListener;
 import java.util.Optional;
 import java.util.UUID;
