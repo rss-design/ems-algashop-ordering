@@ -1,8 +1,8 @@
 package com.algaworks.algashop.ordering.presentation;
 
-import com.algaworks.algashop.ordering.domain.model.DomainEntityNotFoundException;
-import com.algaworks.algashop.ordering.domain.model.DomainException;
-import com.algaworks.algashop.ordering.domain.model.customer.CustomerEmailIsInUseException;
+import com.algaworks.algashop.ordering.core.domain.model.DomainEntityNotFoundException;
+import com.algaworks.algashop.ordering.core.domain.model.DomainException;
+import com.algaworks.algashop.ordering.core.domain.model.customer.CustomerEmailIsInUseException;
 import java.net.URI;
 import java.util.Map;
 import java.util.stream.Collectors;

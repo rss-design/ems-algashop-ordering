@@ -1,6 +1,6 @@
 package com.algaworks.algashop.ordering.infrastructure.persistence.entity;
 
-import com.algaworks.algashop.ordering.domain.model.IdGenerator;
+import com.algaworks.algashop.ordering.core.domain.model.IdGenerator;
 import com.algaworks.algashop.ordering.infrastructure.persistence.commons.AddressEmbeddable;
 import com.algaworks.algashop.ordering.infrastructure.persistence.order.BillingEmbeddable;
 import com.algaworks.algashop.ordering.infrastructure.persistence.order.RecipientEmbeddable;

@@ -1,13 +1,11 @@
 package com.algaworks.algashop.ordering.infrastructure.product.client.fake;
 
-import com.algaworks.algashop.ordering.domain.model.product.ProductCatalogService;
-import com.algaworks.algashop.ordering.domain.model.commons.Money;
-import com.algaworks.algashop.ordering.domain.model.product.Product;
-import com.algaworks.algashop.ordering.domain.model.product.ProductName;
-import com.algaworks.algashop.ordering.domain.model.product.ProductId;
+import com.algaworks.algashop.ordering.core.domain.model.product.ProductCatalogService;
+import com.algaworks.algashop.ordering.core.domain.model.commons.Money;
+import com.algaworks.algashop.ordering.core.domain.model.product.Product;
+import com.algaworks.algashop.ordering.core.domain.model.product.ProductName;
+import com.algaworks.algashop.ordering.core.domain.model.product.ProductId;
 import java.util.Optional;
-
-import org.springframework.stereotype.Component;
 
 //@Component
 public class ProductCatalogServiceFakeImpl implements ProductCatalogService {

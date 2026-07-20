@@ -1,0 +1,46 @@
+package com.algaworks.algashop.ordering.core.application.customer.management;
+
+import com.algaworks.algashop.ordering.core.application.commons.AddressData;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import java.time.LocalDate;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class CustomerInput {
+  @NotBlank
+  private String firstName;
+
+  @NotBlank
+  private String lastName;
+
+  @NotBlank
+  @Email
+  private String email;
+
+  @NotBlank
+  private String phone;
+
+  @NotBlank
+  private String document;
+
+  @NotNull
+  @Past
+  private LocalDate birthDate;
+
+  @NotNull
+  private Boolean promotionNotificationsAllowed;
+
+  @NotNull
+  @Valid
+  private AddressData address;
+}

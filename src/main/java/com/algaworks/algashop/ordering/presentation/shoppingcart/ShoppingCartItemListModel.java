@@ -1,6 +1,6 @@
 package com.algaworks.algashop.ordering.presentation.shoppingcart;
 
-import com.algaworks.algashop.ordering.application.shoppingcart.query.ShoppingCartItemOutput;
+import com.algaworks.algashop.ordering.core.application.shoppingcart.query.ShoppingCartItemOutput;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
