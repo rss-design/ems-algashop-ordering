@@ -2,8 +2,8 @@ package com.algaworks.algashop.ordering.presentation.shoppingcart;
 
 import com.algaworks.algashop.ordering.core.ports.in.shoppingcart.ShoppingCartItemInput;
 import com.algaworks.algashop.ordering.core.application.shoppingcart.ShoppingCartManagementApplicationService;
-import com.algaworks.algashop.ordering.core.application.shoppingcart.query.ShoppingCartOutput;
-import com.algaworks.algashop.ordering.core.application.shoppingcart.query.ShoppingCartQueryService;
+import com.algaworks.algashop.ordering.core.ports.in.shoppingcart.ShoppingCartOutput;
+import com.algaworks.algashop.ordering.core.ports.in.shoppingcart.ForQueryingShoppingCarts;
 import com.algaworks.algashop.ordering.core.domain.model.customer.CustomerNotFoundException;
 import com.algaworks.algashop.ordering.core.domain.model.product.ProductNotFoundException;
 import com.algaworks.algashop.ordering.presentation.UnprocessableEntityException;
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ShoppingCartController {
 
-  private final ShoppingCartQueryService queryService;
+  private final ForQueryingShoppingCarts queryService;
   private final ShoppingCartManagementApplicationService managementService;
 
   @GetMapping("/{shoppingCartId}")

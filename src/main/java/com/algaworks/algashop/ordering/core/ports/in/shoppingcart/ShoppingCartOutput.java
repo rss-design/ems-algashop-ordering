@@ -1,4 +1,4 @@
-package com.algaworks.algashop.ordering.core.application.shoppingcart.query;
+package com.algaworks.algashop.ordering.core.ports.in.shoppingcart;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
