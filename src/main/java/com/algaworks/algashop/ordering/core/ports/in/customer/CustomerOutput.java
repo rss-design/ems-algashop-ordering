@@ -1,19 +1,19 @@
-package com.algaworks.algashop.ordering.core.application.customer.query;
+package com.algaworks.algashop.ordering.core.ports.in.customer;
 
+import com.algaworks.algashop.ordering.core.ports.in.commons.AddressData;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.util.UUID;
-
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class CustomerSummaryOutput {
+public class CustomerOutput {
     private UUID id;
     private String firstName;
     private String lastName;
@@ -26,4 +26,5 @@ public class CustomerSummaryOutput {
     private OffsetDateTime archivedAt;
     private Boolean promotionNotificationsAllowed;
     private Boolean archived;
+    private AddressData address;
 }

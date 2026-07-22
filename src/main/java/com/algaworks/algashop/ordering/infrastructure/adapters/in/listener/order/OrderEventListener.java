@@ -1,4 +1,4 @@
-package com.algaworks.algashop.ordering.infrastructure.listener.order;
+package com.algaworks.algashop.ordering.infrastructure.adapters.in.listener.order;
 
 import com.algaworks.algashop.ordering.core.domain.model.order.OrderCanceledEvent;
 import com.algaworks.algashop.ordering.core.domain.model.order.OrderPaidEvent;

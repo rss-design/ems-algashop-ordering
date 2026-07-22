@@ -1,4 +1,4 @@
-package com.algaworks.algashop.ordering.infrastructure.listener.shoppingcart;
+package com.algaworks.algashop.ordering.infrastructure.adapters.in.listener.shoppingcart;
 
 import com.algaworks.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartCreatedEvent;
 import com.algaworks.algashop.ordering.core.domain.model.shoppingcart.ShoppingCartEmptiedEvent;

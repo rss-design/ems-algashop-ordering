@@ -1,6 +1,6 @@
-package com.algaworks.algashop.ordering.core.application.customer.management;
+package com.algaworks.algashop.ordering.core.application.customer;
 
-import com.algaworks.algashop.ordering.core.application.commons.AddressData;
+import com.algaworks.algashop.ordering.core.ports.in.commons.AddressData;
 import com.algaworks.algashop.ordering.core.domain.model.commons.Address;
 import com.algaworks.algashop.ordering.core.domain.model.commons.Document;
 import com.algaworks.algashop.ordering.core.domain.model.commons.Email;
@@ -13,6 +13,9 @@ import com.algaworks.algashop.ordering.core.domain.model.customer.CustomerId;
 import com.algaworks.algashop.ordering.core.domain.model.customer.CustomerNotFoundException;
 import com.algaworks.algashop.ordering.core.domain.model.customer.CustomerRegistrationService;
 import com.algaworks.algashop.ordering.core.domain.model.customer.Customers;
+import com.algaworks.algashop.ordering.core.ports.in.customer.CustomerInput;
+import com.algaworks.algashop.ordering.core.ports.in.customer.CustomerUpdateInput;
+import com.algaworks.algashop.ordering.core.ports.in.customer.ForManagingCustomer;
 import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +25,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerManagementApplicationService {
+public class CustomerManagementApplicationService implements ForManagingCustomer {
 
     private final CustomerRegistrationService customerRegistration;
     private final Customers customers;
 
     @Transactional
+    @Override
     public UUID create(CustomerInput input) {
         Objects.requireNonNull(input);
         AddressData address = input.getAddress();
@@ -56,6 +60,7 @@ public class CustomerManagementApplicationService {
     }
 
     @Transactional
+    @Override
     public void update(UUID rawCustomerId, CustomerUpdateInput input) {
         Objects.requireNonNull(rawCustomerId);
         Objects.requireNonNull(input);
@@ -88,6 +93,7 @@ public class CustomerManagementApplicationService {
     }
 
     @Transactional
+    @Override
     public void archive(UUID rawCustomerId) {
         Objects.requireNonNull(rawCustomerId);
 
@@ -99,6 +105,7 @@ public class CustomerManagementApplicationService {
     }
 
     @Transactional
+    @Override
     public void changeEmail(UUID rawCustomerId, String newEmail) {
         Objects.requireNonNull(rawCustomerId);
 

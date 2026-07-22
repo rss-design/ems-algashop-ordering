@@ -1,4 +1,4 @@
-package com.algaworks.algashop.ordering.core.application.customer.loyaltypoints;
+package com.algaworks.algashop.ordering.core.application.customer;
 
 import com.algaworks.algashop.ordering.core.domain.model.customer.Customer;
 import com.algaworks.algashop.ordering.core.domain.model.customer.CustomerId;
@@ -9,6 +9,7 @@ import com.algaworks.algashop.ordering.core.domain.model.order.Order;
 import com.algaworks.algashop.ordering.core.domain.model.order.OrderId;
 import com.algaworks.algashop.ordering.core.domain.model.order.OrderNotFoundException;
 import com.algaworks.algashop.ordering.core.domain.model.order.Orders;
+import com.algaworks.algashop.ordering.core.ports.in.customer.ForAddingLoyaltyPoints;
 import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +19,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerLoyaltyPointsApplicationService {
+public class CustomerLoyaltyPointsApplicationService implements ForAddingLoyaltyPoints {
 
     private final CustomerLoyaltyPointsService customerLoyaltyPointsService;
     private final Orders orders;
     private final Customers customers;
 
     @Transactional
+    @Override
     public void addLoyaltyPoints(UUID rawCustomerId, String rawOrderId) {
         Objects.requireNonNull(rawCustomerId);
         Objects.requireNonNull(rawOrderId);

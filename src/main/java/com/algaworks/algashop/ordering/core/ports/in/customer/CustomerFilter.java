@@ -1,4 +1,4 @@
-package com.algaworks.algashop.ordering.core.application.customer.query;
+package com.algaworks.algashop.ordering.core.ports.in.customer;
 
 import com.algaworks.algashop.ordering.core.application.utility.SortablePageFilter;
 import lombok.AllArgsConstructor;

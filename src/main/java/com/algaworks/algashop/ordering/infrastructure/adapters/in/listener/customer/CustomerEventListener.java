@@ -1,8 +1,8 @@
-package com.algaworks.algashop.ordering.infrastructure.listener.customer;
+package com.algaworks.algashop.ordering.infrastructure.adapters.in.listener.customer;
 
-import com.algaworks.algashop.ordering.core.application.customer.loyaltypoints.CustomerLoyaltyPointsApplicationService;
-import com.algaworks.algashop.ordering.core.application.customer.notification.CustomerNotificationApplicationService;
-import com.algaworks.algashop.ordering.core.application.customer.notification.CustomerNotificationApplicationService.NotifyNewRegistrationInput;
+import com.algaworks.algashop.ordering.core.ports.in.customer.ForAddingLoyaltyPoints;
+import com.algaworks.algashop.ordering.core.ports.in.customer.ForConfirmCustomerRegistration;
+import com.algaworks.algashop.ordering.core.ports.out.customer.ForNotifyingCustomers.NotifyNewRegistrationInput;
 import com.algaworks.algashop.ordering.core.domain.model.customer.CustomerArchivedEvent;
 import com.algaworks.algashop.ordering.core.domain.model.customer.CustomerRegisteredEvent;
 import com.algaworks.algashop.ordering.core.domain.model.order.OrderReadyEvent;
@@ -17,20 +17,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CustomerEventListener {
 
-    private final CustomerNotificationApplicationService customerNotificationApplicationService;
-    private final CustomerLoyaltyPointsApplicationService  customerLoyaltyPointsApplicationService;
+    private final ForConfirmCustomerRegistration forConfirmCustomerRegistration;
+    private final ForAddingLoyaltyPoints forAddingLoyaltyPoints;
 
     @EventListener
     public void listen(CustomerRegisteredEvent event) {
         log.info("CustomerRegisteredEvent listen received: {}", event);
-
-        NotifyNewRegistrationInput input = new NotifyNewRegistrationInput(
-            event.customerId().value(),
-            event.fullName().firstName(),
-            event.email().value()
-        );
-
-        customerNotificationApplicationService.notifyNewRegistration(input);
+        forConfirmCustomerRegistration.confirm(event.customerId().value());
     }
 
     @EventListener
@@ -42,7 +35,7 @@ public class CustomerEventListener {
     public void listen(OrderReadyEvent event) {
         log.info("OrderReadyEvent listen received: {}", event);
 
-        customerLoyaltyPointsApplicationService.addLoyaltyPoints(
+        forAddingLoyaltyPoints.addLoyaltyPoints(
             event.customerId().value(),
             event.orderId().toString()
         );
