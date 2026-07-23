@@ -1,4 +1,4 @@
-package com.algaworks.algashop.ordering.infrastructure.beans;
+package com.algaworks.algashop.ordering.infrastructure.config.beans;
 
 import com.algaworks.algashop.ordering.core.domain.model.customer.LoyaltyPoints;
 import com.algaworks.algashop.ordering.core.domain.model.order.CustomerHaveFreeShippingSpecification;

@@ -11,8 +11,8 @@ import com.algaworks.algashop.ordering.core.ports.in.order.ForQueryingOrders;
 import com.algaworks.algashop.ordering.core.ports.in.order.OrderFilter;
 import com.algaworks.algashop.ordering.core.ports.out.order.OrderDetailOutput;
 import com.algaworks.algashop.ordering.core.ports.out.order.OrderSummaryOutput;
-import com.algaworks.algashop.ordering.presentation.PageModel;
-import com.algaworks.algashop.ordering.presentation.UnprocessableEntityException;
+import com.algaworks.algashop.ordering.infrastructure.adapters.in.web.PageModel;
+import com.algaworks.algashop.ordering.infrastructure.adapters.in.web.exceptionhandler.UnprocessableEntityException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 

@@ -1,4 +1,4 @@
-package com.algaworks.algashop.ordering.infrastructure.locale;
+package com.algaworks.algashop.ordering.infrastructure.config.locale;
 
 import java.util.Locale;
 

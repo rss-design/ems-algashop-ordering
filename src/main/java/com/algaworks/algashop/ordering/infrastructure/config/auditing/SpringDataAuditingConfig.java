@@ -1,4 +1,4 @@
-package com.algaworks.algashop.ordering.infrastructure.persistence;
+package com.algaworks.algashop.ordering.infrastructure.config.auditing;
 
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;

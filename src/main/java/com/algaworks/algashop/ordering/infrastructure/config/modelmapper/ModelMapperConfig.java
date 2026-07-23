@@ -1,4 +1,4 @@
-package com.algaworks.algashop.ordering.infrastructure.utility.modelmapper;
+package com.algaworks.algashop.ordering.infrastructure.config.modelmapper;
 
 import com.algaworks.algashop.ordering.core.ports.in.customer.CustomerOutput;
 import com.algaworks.algashop.ordering.core.ports.out.order.OrderDetailOutput;

@@ -1,4 +1,4 @@
-package com.algaworks.algashop.ordering.presentation;
+package com.algaworks.algashop.ordering.infrastructure.adapters.in.web.exceptionhandler;
 
 public class UnprocessableEntityException extends RuntimeException {
   public UnprocessableEntityException() {
