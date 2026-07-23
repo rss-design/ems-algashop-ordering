@@ -1,4 +1,4 @@
-package com.algaworks.algashop.ordering.core.application.order.query;
+package com.algaworks.algashop.ordering.core.ports.in.order;
 
 import com.algaworks.algashop.ordering.core.ports.in.commons.AddressData;
 import jakarta.validation.Valid;

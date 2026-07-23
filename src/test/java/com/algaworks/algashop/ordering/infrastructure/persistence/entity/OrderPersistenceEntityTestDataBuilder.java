@@ -2,15 +2,15 @@ package com.algaworks.algashop.ordering.infrastructure.persistence.entity;
 
 import com.algaworks.algashop.ordering.core.domain.model.IdGenerator;
 import com.algaworks.algashop.ordering.infrastructure.persistence.commons.AddressEmbeddable;
-import com.algaworks.algashop.ordering.infrastructure.persistence.order.BillingEmbeddable;
-import com.algaworks.algashop.ordering.infrastructure.persistence.order.RecipientEmbeddable;
-import com.algaworks.algashop.ordering.infrastructure.persistence.order.ShippingEmbeddable;
-import com.algaworks.algashop.ordering.infrastructure.persistence.order.OrderItemPersistenceEntity;
+import com.algaworks.algashop.ordering.infrastructure.adapters.out.persistence.order.BillingEmbeddable;
+import com.algaworks.algashop.ordering.infrastructure.adapters.out.persistence.order.RecipientEmbeddable;
+import com.algaworks.algashop.ordering.infrastructure.adapters.out.persistence.order.ShippingEmbeddable;
+import com.algaworks.algashop.ordering.infrastructure.adapters.out.persistence.order.OrderItemPersistenceEntity;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Set;
-import static com.algaworks.algashop.ordering.infrastructure.persistence.order.OrderPersistenceEntity.*;
+import static com.algaworks.algashop.ordering.infrastructure.adapters.out.persistence.order.OrderPersistenceEntity.*;
 
 public class OrderPersistenceEntityTestDataBuilder {
 

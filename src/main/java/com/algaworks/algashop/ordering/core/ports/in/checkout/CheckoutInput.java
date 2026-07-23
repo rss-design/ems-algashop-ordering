@@ -1,10 +1,10 @@
-package com.algaworks.algashop.ordering.core.application.checkout;
+package com.algaworks.algashop.ordering.core.ports.in.checkout;
 
-import com.algaworks.algashop.ordering.core.application.order.query.BillingData;
+import com.algaworks.algashop.ordering.core.ports.in.order.BillingData;
+import com.algaworks.algashop.ordering.core.ports.in.order.ShippingInput;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BuyNowInput {
+public class CheckoutInput {
+  @NotNull
+  private UUID shoppingCartId;
+
+  @NotBlank
+  private String paymentMethod;
+
   @Valid
   @NotNull
   private ShippingInput shipping;
@@ -23,19 +29,6 @@ public class BuyNowInput {
   @Valid
   @NotNull
   private BillingData billing;
-
-  @NotNull
-  private UUID productId;
-
-  @NotNull
-  private UUID customerId;
-
-  @NotNull
-  @Positive
-  private Integer quantity;
-
-  @NotBlank
-  private String paymentMethod;
 
   private UUID creditCardId;
 }

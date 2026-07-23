@@ -1,7 +1,7 @@
-package com.algaworks.algashop.ordering.core.application.checkout;
+package com.algaworks.algashop.ordering.core.application.order;
 
 import com.algaworks.algashop.ordering.core.ports.in.commons.AddressData;
-import com.algaworks.algashop.ordering.core.application.order.query.BillingData;
+import com.algaworks.algashop.ordering.core.ports.in.order.BillingData;
 import com.algaworks.algashop.ordering.core.domain.model.commons.Address;
 import com.algaworks.algashop.ordering.core.domain.model.commons.Document;
 import com.algaworks.algashop.ordering.core.domain.model.commons.Email;

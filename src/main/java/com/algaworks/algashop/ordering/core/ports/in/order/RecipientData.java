@@ -1,4 +1,4 @@
-package com.algaworks.algashop.ordering.core.application.order.query;
+package com.algaworks.algashop.ordering.core.ports.in.order;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

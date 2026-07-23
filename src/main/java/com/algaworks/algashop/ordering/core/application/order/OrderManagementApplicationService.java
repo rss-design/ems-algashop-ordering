@@ -1,9 +1,10 @@
-package com.algaworks.algashop.ordering.core.application.order.management;
+package com.algaworks.algashop.ordering.core.application.order;
 
 import com.algaworks.algashop.ordering.core.domain.model.order.Order;
 import com.algaworks.algashop.ordering.core.domain.model.order.OrderId;
 import com.algaworks.algashop.ordering.core.domain.model.order.OrderNotFoundException;
 import com.algaworks.algashop.ordering.core.domain.model.order.Orders;
+import com.algaworks.algashop.ordering.core.ports.in.order.ForManagingOrders;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 
@@ -12,11 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class OrderManagementApplicationService {
+public class OrderManagementApplicationService implements ForManagingOrders {
 
     private final Orders orders;
 
     @Transactional
+    @Override
     public void cancel(String rawOrderId) {
         Order order = findOrder(rawOrderId);
         order.cancel();
@@ -24,6 +26,7 @@ public class OrderManagementApplicationService {
     }
 
     @Transactional
+    @Override
     public void markAsPaid(String rawOrderId) {
         Order order = findOrder(rawOrderId);
         order.markAsPaid();
@@ -31,6 +34,7 @@ public class OrderManagementApplicationService {
     }
 
     @Transactional
+    @Override
     public void markAsReady(String rawOrderId) {
         Order order = findOrder(rawOrderId);
         order.markAsReady();
